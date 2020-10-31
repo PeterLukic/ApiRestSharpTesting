@@ -5,6 +5,9 @@ using AventStack.ExtentReports;
 using AventStack.ExtentReports.Gherkin.Model;
 using AventStack.ExtentReports.Reporter;
 using TechTalk.SpecFlow;
+//using NUnit.Framework;
+
+//[assembly: Parallelizable(ParallelScope.Fixtures)]
 
 namespace ApiRestSharp.Hooks
 {
@@ -12,7 +15,7 @@ namespace ApiRestSharp.Hooks
     public class TestInitialize
     {
         //Global Variable for Extend report
-        private static ExtentTest _featureName;
+        private static ExtentTest _feature;
         private static ExtentTest _scenario;
         private static ExtentReports _extent;
 
@@ -45,22 +48,22 @@ namespace ApiRestSharp.Hooks
             _extent.AttachReporter(htmlReporter);
         }
 
-        [BeforeScenario]
-        [Obsolete]
-        public void Initialize()
-        {
-            //Create dynamic scenario name
-            _scenario = _featureName.CreateNode<Scenario>(ScenarioContext.Current.ScenarioInfo.Title);
-        }
-
         [BeforeFeature]
         [Obsolete]
         public static void BeforeFeature()
         {
             //Create dynamic feature name
-            _featureName = _extent.CreateTest<Feature>(FeatureContext.Current.FeatureInfo.Title);
+            _feature = _extent.CreateTest<Feature>(FeatureContext.Current.FeatureInfo.Title);
 
-         
+        }
+
+        [BeforeScenario]
+        [Obsolete]
+        public void Initialize()
+        {
+          
+            //Create dynamic scenario name
+            _scenario = _feature.CreateNode<Scenario>(ScenarioContext.Current.ScenarioInfo.Title);
         }
 
         [AfterStep]

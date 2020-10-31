@@ -14,6 +14,7 @@ namespace ApiRestSharp.Utilities
             var jsonObj = new JsonDeserializer().Deserialize<Dictionary<string, string>>(restResponse);
 
             return jsonObj;
+
         }
         public static string GetResponseObject(this IRestResponse response, string responseObject)
         {

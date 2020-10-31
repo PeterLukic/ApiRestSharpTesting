@@ -12,27 +12,28 @@ namespace ApiRestSharp.Steps
     [Binding]
     class GetPostsSteps
     {
-        private Settings _settings;
+        private readonly Settings _settings;
         public GetPostsSteps(Settings settings) => _settings = settings;
-        
-        [Given(@"I perform GET operation for ""(.*)""")]
-        public void GivenIPerformGETOperationFor(string url)
+
+        [Given(@"I perform GET operation for Post ""(.*)""")]
+        public void GivenIPerformGETOperationForPost(string url)
         {
             _settings.request = new RestRequest(url, Method.GET);
         }
 
+
         [Then(@"I perform operation for post ""(.*)""")]
+        [Obsolete]
         public void ThenIPerformOperationForPost(int postId)
         {
-            Thread.Sleep(2000);
-            _settings.request.AddUrlSegment("postid", postId.ToString());
+            _settings.request.AddUrlSegment("postId", postId.ToString());
             _settings.response = _settings.restClient.ExecuteAsyncRequest<Posts>(_settings.request).GetAwaiter().GetResult();
         }
 
-        [Then(@"I should see the ""(.*)"" name as ""(.*)""")]
+
+        [Then(@"I compare post ""(.*)"" with value ""(.*)""")]
         public void ThenIShouldSeeTheNameAs(string key, string value)
         {
-            Console.WriteLine();
             Assert.That(_settings.response.GetResponseObject(key), Is.EqualTo(value), $"The {key} is not matching");
        
         }
